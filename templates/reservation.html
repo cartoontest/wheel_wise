@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+
+<html>
+	
+<head>
+	<meta charset="UTF-8">
+	<title>wheel_balancing System</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to WiseWheel</h1>
+        <nav>
+            <ul>
+				<li><a href="http://127.0.0.1:2000/">Home</a></li>
+				<li class="nav-link"><a href="/logout">Log out</a></li>
+		    </ul>
+        </nav>
+    </header>
+ 
+ <h2>Book a wheel_balancing space:</h2>
+ <form id="book-form">
+	<label for="space-id">Space ID:</label>
+	<select id="space-id" name="space-id" required>
+		<option value="" selected disabled hidden>Choose Space ID</option>
+	</select>
+	<br>
+	<label for="name">Name:</label>
+	<input type="text" id="name" name="name" required>
+	<br>
+	<label for="phone">Phone:</label>
+	<input type="text" id="phone" name="phone" required>
+	<br>
+	<button type="submit">Book Space</button>
+ </form>
+
+ <h2>Cancel a wheel_balancing reservation:</h2>
+ <form id="cancel-form">
+	<label for="cancel-space-id">Space ID:</label>
+	<input type="text" id="cancel-space-id" name="cancel-space-id" required>
+	<br>
+	<button type="submit">Cancel Reservation</button>
+ </form>
+ <h2>Free Spaces:</h2>
+ <ul id="free-spaces-list"></ul>
+ <script>
+
+
+	// Reserve a wheel_balancing space
+	document.getElementById('book-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let spaceId = document.getElementById('space-id').value;
+    let name = document.getElementById('name').value;
+    let phone = document.getElementById('phone').value;
+    
+    axios.post('http://127.0.0.1:8000/wheel_balancing/reserve', {
+		id: parseInt(spaceId),
+        name: name,
+        phone: phone
+    })
+    .then(function(response) {
+        alert(response.data);
+    })
+    .catch(function(error) {
+        alert(error.response.data);
+    });
+
+	
+ });
+ </script>
+
+ <script>
+	// Dropp menu
+	axios.get('http://127.0.0.1:8000/wheel_balancing/free_spaces')
+	.then(function(response) {
+	  let freeSpaces = response.data;
+	  let spaceSelect = document.getElementById('space-id');
+	  freeSpaces.forEach(function(space) {
+		if (/^[1-3]$/.test(space.id)) {
+		  let spaceOption = document.createElement('option');
+		  spaceOption.value = space.id;
+		  spaceOption.innerText = space.id;
+		  spaceSelect.appendChild(spaceOption);
+		}
+	  });
+	});
+
+	// Get free spaces
+	axios.get('http://127.0.0.1:8000/wheel_balancing/free_spaces')
+	.then(function(response) {
+		let freeSpaces = response.data;
+		let freeSpacesList = document.getElementById('free-spaces-list');
+		freeSpaces.forEach(function(space) {
+			let spaceItem = document.createElement('li');
+			spaceItem.innerText = `Space ID: ${space.id}, Status: ${space.status}`;
+			freeSpacesList.appendChild(spaceItem);
+		});
+	})
+	.catch(function(error) {
+		alert(error.response.data);
+	});
+ </script>
+
+ <script>
+	// Cancel a wheel_balancing reservation
+	document.getElementById('cancel-form').addEventListener('submit', function(event) {
+		event.preventDefault();
+		let spaceId = parseInt(document.getElementById('cancel-space-id').value);
+
+		axios.post('http://127.0.0.1:8000/wheel_balancing/cancel', {
+			id: spaceId
+		})
+		.then(function(response) {
+			alert(response.data);
+		})
+		.catch(function(error) {
+			alert(error.response.data);
+		});
+	});
+ </script>
+</body>
+
+</html>
