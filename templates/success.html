@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>wheel_balancing System - Success</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to WiseWheel</h1>
+        <nav>
+            <ul>
+                <li><a href="http://127.0.0.1:2000/">Home</a></li>
+                <li class="nav-link"><a href="/logout">Log out</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <h2>Registration Successful</h2>
+    <p>{{ welcome_message }}</p>
+    
+    <p>Click <a href="/login">here</a> to go to the login page.</p>
+
+</body>
+</html>

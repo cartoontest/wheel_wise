@@ -33,39 +33,38 @@
   </form>
 
   <script>
-    function validateForm() {
-      const username = document.getElementById('username').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+    function showError(message) {
+      alert(message);
+      return false;
+    }
 
-      if (username.trim() === '') {
-        alert('Please enter a username.');
-        return false;
+    function validateForm() {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username) {
+        return showError('Please enter a username.');
       }
 
       if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-        alert('Invalid username format.');
-        return false;
+        return showError('Invalid username format.');
       }
 
-      if (email.trim() === '') {
-        alert('Please enter an email.');
-        return false;
+      if (!email) {
+        return showError('Please enter an email.');
       }
 
       if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-        alert('Invalid email format.');
-        return false;
+        return showError('Invalid email format.');
       }
 
-      if (password.trim() === '') {
-        alert('Please enter a password.');
-        return false;
+      if (!password) {
+        return showError('Please enter a password.');
       }
 
       if (password.length < 8) {
-        alert('Password must be at least 8 characters.');
-        return false;
+        return showError('Password must be at least 8 characters.');
       }
 
       return true; // Form is valid, allow submission

@@ -95,7 +95,8 @@ def success():
     username = session['username']  # retrieve the user from the session
     welcome_message = f"Welcome {username}!"
     session['welcome_message'] = welcome_message  # Store the welcome message in the session
-    return redirect(url_for('index'))  # Redirect to the home page
+    return render_template('success.html', welcome_message=welcome_message)
+
 
 @app.route('/logout')
 def logout():
